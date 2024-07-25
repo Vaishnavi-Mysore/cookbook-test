@@ -1,22 +1,32 @@
-import React from "react";
 
-import "./App.css";
 
-const recipes = [
-  {
-    author: "Jim",
-    name: "Chicken Curry",
-    description: "Delicious spicy chicken curry",
-  },
-  {
-    author: "Aravind",
-    name: "Hamburger",
-    description: "Juicy burger with toppings and a soft bun",
-  },
-];
+import React, { useState } from 'react';
+import { recipes } from './recipeData';
+import RecipeList from './components/RecipeList';
+import RecipeDetail from './components/RecipeDetails';
+import CommentSection from './components/CommentSection';
 
-function App() {
-  return <div className="App">Let's add some content here</div>;
-}
+const App = () => {
+  const [selectedRecipeId, setSelectedRecipeId] = useState(null);
+
+  const handleRecipeSelect = (id) => {
+    setSelectedRecipeId(id);
+  };
+
+  const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
+
+  return (
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <RecipeList recipes={recipes} onSelect={handleRecipeSelect} />
+      </div>
+      <div style={{ flex: 2 }}>
+        <RecipeDetail recipe={selectedRecipe} />
+        {selectedRecipe && <CommentSection comments={selectedRecipe.comments} />}
+      </div>
+    </div>
+  );
+};
 
 export default App;
+
